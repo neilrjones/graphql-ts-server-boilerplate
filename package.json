@@ -22,9 +22,13 @@
   },
   "dependencies": {
     "@gql2ts/from-schema": "^1.8.0",
+    "@types/dotenv": "^4.0.3",
+    "@types/dotenv-safe": "^5.0.0",
     "@types/express": "^4.11.1",
     "bcryptjs": "^2.4.3",
+    "cross-env": "^5.1.6",
     "dotenv": "^5.0.1",
+    "dotenv-safe": "^5.0.1",
     "express": "^4.16.3",
     "graphql": "^0.13.2",
     "graphql-import": "^0.5.0",
@@ -41,8 +45,8 @@
     "yup": "^0.24.1"
   },
   "scripts": {
-    "start": "NODE_ENV=development nodemon --exec ts-node src/index.ts",
-    "test": "NODE_ENV=test jest --watch",
+    "start": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
+    "test": "cross-env NODE_ENV=test jest --watch",
     "gen-schema-types": "ts-node src/scripts/createTypes.ts"
   },
   "jest": {
