@@ -37,6 +37,17 @@ const enVars = {
       ? process.env.MONGO_URI_TESTS
       : process.env.MONGO_URI
   },
+  mail: {
+    from: 'neil@ocularit.com',
+    to: 'neil@dafarms.com',
+    subject: 'Confirm Email',
+    text: `Please confirm your email within the next 24 hours`,
+    host: 'email-smtp.us-east-1.amazonaws.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    user: 'AKIAJNYQKUKNZRUCQVYA',
+    pass: 'Ahw30IsEVpFfV0LEhLq0NP6SjUgY4D+z2MVEg2p6//Ab'
+  },
   logs: process.env.NODE_ENV === 'production'
     ? 'combined'
     : 'dev'

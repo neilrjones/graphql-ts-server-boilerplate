@@ -12,6 +12,7 @@ import {
   isRequired
 } from "./errorMessages";
 import {createConfirmEmailLink} from "../../utils/createConfirmEmailLink";
+import {sendmail} from "../../utils/APIFcns";
 
 const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
@@ -64,7 +65,9 @@ export const resolvers : ResolverMap = {
       const user = User.create({email, password: hashedPassword});
 
       await user.save();
-      await createConfirmEmailLink(url, user.id, redis);
+      sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
+      // if (process.env.NODE_ENV !== 'test') {   sendmail(email, (await
+      // createConfirmEmailLink(url, user.id, redis))); }
       return null;
     }
   }

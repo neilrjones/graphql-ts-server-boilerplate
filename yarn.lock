@@ -171,6 +171,13 @@
   version "9.6.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.7.tgz#5f3816d1db2155edcde1b2e3aa5d0e5c520cb564"
 
+"@types/nodemailer@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-4.6.0.tgz#542ecb5fff91cd3d841fc67cace0527649030462"
+  dependencies:
+    "@types/events" "*"
+    "@types/node" "*"
+
 "@types/request@*":
   version "2.47.0"
   resolved "https://registry.yarnpkg.com/@types/request/-/request-2.47.0.tgz#76a666cee4cb85dcffea6cd4645227926d9e114e"
@@ -3301,6 +3308,10 @@ node-pre-gyp@^0.9.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
+
+nodemailer@^4.6.5:
+  version "4.6.5"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-4.6.5.tgz#306ce18c4543f3f06e5f76665d3cb6277f872f53"
 
 nodemon@^1.17.3:
   version "1.17.3"
