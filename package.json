@@ -4,6 +4,7 @@
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.1",
+    "@types/connect-redis": "^0.0.7",
     "@types/dotenv": "^4.0.3",
     "@types/dotenv-safe": "^5.0.0",
     "@types/express": "^4.16.0",
@@ -27,6 +28,7 @@
   "dependencies": {
     "@gql2ts/from-schema": "^1.8.0",
     "bcryptjs": "^2.4.3",
+    "connect-redis": "^3.3.3",
     "cross-env": "^5.1.6",
     "dotenv": "^5.0.1",
     "dotenv-safe": "^5.0.1",

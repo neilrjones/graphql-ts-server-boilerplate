@@ -15,7 +15,7 @@ beforeAll(async() => {
   await createTypeormConn();
 });
 
-const email = "tom@bob.com";
+const email = "tom5@bob.com";
 // const password = "jalksdf";
 const password = "123EastSussex!";
 

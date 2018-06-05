@@ -24,7 +24,7 @@ const enVars = {
   fbookSecret: process.env.FACEBOOK_CLIENT_SECRET,
   callbackUrl: process.env.FACEBOOK_CALLBACK,
   asyncUrl: process.env.ASYNC_URL,
-  secret: process.env.SECRET,
+  secret: process.env.SECRET || 'bA2xcjpf8y5aSUFsNB2qN5yymUBSs6es3qHoFpGkec75RCeBb8cpKauGefw5qy4',
   secret2: process.env.SECRET2,
   awsId: process.env.AWS_ACCESS_KEY_ID,
   awsKey: process.env.AWS_SECRET_ACCESS_KEY,
