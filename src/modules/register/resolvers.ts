@@ -65,9 +65,10 @@ export const resolvers : ResolverMap = {
       const user = User.create({email, password: hashedPassword});
 
       await user.save();
-      sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
-      // if (process.env.NODE_ENV !== 'test') {   sendmail(email, (await
-      // createConfirmEmailLink(url, user.id, redis))); }
+      // sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
+      if (process.env.NODE_ENV !== 'test') {
+        sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
+      }
       return null;
     }
   }
