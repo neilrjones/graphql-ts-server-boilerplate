@@ -2,6 +2,8 @@ import * as bcrypt from "bcryptjs";
 import {ResolverMap} from "../../types/graphql-utils";
 import {User} from "../../entity/User";
 import {invalidLogin, confirmEmailError} from "./errorMessages";
+import {createMiddleware} from "../../utils/createMiddleware";
+import middleware from "../../utils/middleware";
 
 const errorResponse = [
   {
@@ -15,7 +17,7 @@ export const resolvers : ResolverMap = {
     bye2: () => "bye"
   },
   Mutation: {
-    login: async(_, {email, password} : GQL.ILoginOnMutationArguments, {session}) => {
+    login: createMiddleware(middleware, async(_, {email, password} : GQL.ILoginOnMutationArguments, {session}) => {
       const user = await User.findOne({where: {
           email
         }});
@@ -44,6 +46,6 @@ export const resolvers : ResolverMap = {
       // object to see if the user is valid
       session.userId = user.id;
       return null;
-    }
-  }
+    })
+  } // Mutation
 };

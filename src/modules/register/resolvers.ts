@@ -13,6 +13,8 @@ import {
 } from "./errorMessages";
 import {createConfirmEmailLink} from "../../utils/createConfirmEmailLink";
 import {sendmail} from "../../utils/APIFcns";
+import {createMiddleware} from "../../utils/createMiddleware";
+import middleware from "../../utils/middleware";
 
 const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
@@ -39,7 +41,7 @@ export const resolvers : ResolverMap = {
     bye: () => "bye"
   },
   Mutation: {
-    register: async(_, args : GQL.IRegisterOnMutationArguments, {redis, url}) => {
+    register: createMiddleware(middleware, async(_, args : GQL.IRegisterOnMutationArguments, {redis, url}) => {
       try {
         await schema.validate(args, {abortEarly: false});
       } catch (err) {
@@ -72,6 +74,6 @@ export const resolvers : ResolverMap = {
         sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
       }
       return null;
-    }
+    })
   }
 };
