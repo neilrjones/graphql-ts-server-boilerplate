@@ -1,4 +1,4 @@
-import * as bcrypt from "bcryptjs";
+// import * as bcrypt from "bcryptjs";
 import * as yup from "yup";
 import {ResolverMap} from "../../types/graphql-utils";
 import {User} from "../../entity/User";
@@ -61,12 +61,14 @@ export const resolvers : ResolverMap = {
         ];
       }
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = User.create({email, password: hashedPassword});
+      // const hashedPassword = await bcrypt.hash(password, 10); Now being done by
+      // TypeOrm @BeforeInsert const user = User.create({email, password:
+      // hashedPassword});
+      const user = User.create({email, password});
 
       await user.save();
       // sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
-      if (process.env.NODE_ENV !== 'test') {
+      if (process.env.NODE_ENV === 'production') {
         sendmail(email, (await createConfirmEmailLink(url, user.id, redis)));
       }
       return null;

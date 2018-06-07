@@ -1,21 +1,19 @@
 import {request} from "graphql-request";
-import {startServer} from "../../startServer";
 import {User} from "../../entity/User";
-import {
-  duplicateEmail,
-  emailNotLongEnough,
-  invalidEmail,
-  passwordNotLongEnough,
-  passwordWrongFormat,
-  isRequired
-} from "./errorMessages";
+import {duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough, passwordWrongFormat} from "./errorMessages";
 import {createTypeormConn} from "../../utils/createTypeormConn";
+// import { Connection } from "nodemailer/lib/mailer";
+import {Connection} from "typeorm";
 
+let conn : Connection;
 beforeAll(async() => {
-  await createTypeormConn();
+  conn = await createTypeormConn();
+});
+afterAll(async() => {
+  conn.close();
 });
 
-const email = "tom5@bob.com";
+const email = "register@bob.com";
 // const password = "jalksdf";
 const password = "123EastSussex!";
 

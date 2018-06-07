@@ -48,6 +48,7 @@ const enVars = {
     user: 'AKIAJNYQKUKNZRUCQVYA',
     pass: 'Ahw30IsEVpFfV0LEhLq0NP6SjUgY4D+z2MVEg2p6//Ab'
   },
+  frontEndHost: process.env.FRONT_END_HOST,
   logs: process.env.NODE_ENV === 'production'
     ? 'combined'
     : 'dev'

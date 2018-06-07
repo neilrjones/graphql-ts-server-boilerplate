@@ -1,6 +1,9 @@
 import {GraphQLServer} from "graphql-yoga";
 import * as session from "express-session";
 import * as connectRedis from "connect-redis";
+import "reflect-metadata";
+
+import "dotenv/config";
 
 import {redis} from "./redis";
 
@@ -9,10 +12,9 @@ import {confirmEmail} from "./routes/confirmEmail";
 import {genSchema} from "./utils/genSchema";
 import enVars from "./config/vars";
 
-const {secret, devport} = enVars;
+const {secret, devport, frontEndHost} = enVars;
 const RedisStore = connectRedis(session);
 
-// {   dbport,   secret,   env,   // secret2,   // callbackUrl, } = enVars;
 // startServer is used for starting the Graphql & database servers in
 // development/testing/production modes. Convert startServer into an exported
 // object that can be called from Jest for testing purposes.  Each test will
@@ -25,34 +27,11 @@ export const startServer = async() => {
     context: ({request}) => ({
       redis,
       url: request.protocol + "://" + request.get("host"),
-      session: request.session
+      session: request.session,
+      header: request.header
     })
   });
-  //
-  // enable CORS - Cross Origin Resource Sharing
-  //
-  // server   .express   .use((req, res, next) => {     let oneof = false;
-  // const allowedOrigins = [       'http://localdev:8081',
-  // 'http://localhost:8081',       'http://localhost:3000',
-  // 'http://localhost:3001',       'http://127.0.0.1:8081',
-  // 'http://127.0.0.1:3000',       'http://127.0.0.1:3001',
-  // 'http://10.0.2.2:8081',       'http://10.0.2.15:8081',
-  // 'http://10.0.2.2:8081'     ];     // console.log('Request header is: ',
-  // req.headers.origin);     res.header('Access-Control-Allow-Origin', '*');
-  // if (allowedOrigins.indexOf(req.headers.origin) > -1) {
-  // res.header('Access-Control-Allow-Origin', req.headers.origin);       oneof =
-  // true;     }     if (req.headers['access-control-request-method']) {
-  // res.header('Access-Control-Allow-Methods',
-  // req.headers['access-control-request-method']);       oneof = true;     }
-  // if (req.headers['access-control-request-headers']) {
-  // res.header('Access-Control-Allow-Headers',
-  // req.headers['access-control-request-headers']);       oneof = true;     }
-  // if (oneof) {       res.header('Access-Control-Max-Age', 60 * 60 * 24 * 365);
-  //    }     // intercept OPTIONS method     if (oneof && req.method ==
-  // 'OPTIONS') {       res.send(200);     } else {       next();     }   });
-  //
-  // End Hack for COR testing on localhost
-  //
+
   server
     .express
     .use(session({
@@ -70,7 +49,9 @@ export const startServer = async() => {
 
   const cors = {
     credentials: true,
-    origin: "http://localhost:3000"
+    origin: process.env.NODE_ENV === "test"
+      ? "*"
+      : frontEndHost
   };
   server
     .express
