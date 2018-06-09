@@ -4,7 +4,9 @@ import {User} from "../../entity/User";
 import {invalidLogin, confirmEmailError} from "./errorMessages";
 import {createMiddleware} from "../../utils/createMiddleware";
 import middleware from "../../utils/middleware";
+import enVars from '../../config/vars';
 
+const {userSessionPrefix} = enVars;
 const errorResponse = [
   {
     path: "email",
@@ -17,7 +19,7 @@ export const resolvers : ResolverMap = {
     bye2: () => "bye"
   },
   Mutation: {
-    login: createMiddleware(middleware, async(_, {email, password} : GQL.ILoginOnMutationArguments, {session}) => {
+    login: createMiddleware(middleware, async(_, {email, password} : GQL.ILoginOnMutationArguments, {session, redis, req}) => {
       const user = await User.findOne({where: {
           email
         }});
@@ -45,6 +47,11 @@ export const resolvers : ResolverMap = {
       // until we update the session object. From this point We can check the session
       // object to see if the user is valid
       session.userId = user.id;
+      if (req.sessionID) {
+        // create a list of session ids for the user for multi session logout
+        await redis.lpush(`${userSessionPrefix}${user.id}`, req.sessionID)
+
+      }
       return null;
     })
   } // Mutation

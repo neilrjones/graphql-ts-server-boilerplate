@@ -25,7 +25,19 @@ afterAll(async() => {
 //
 
 describe("logout", () => {
-    test("get current user", async() => {
+    test("Logout multiple sessions", async() => {
+        // session for client 1 - maybe your phone
+        const client1 = new TestClient(process.env.TEST_HOST as string);
+        // session for client 2 - maybe your computer
+        const client2 = new TestClient(process.env.TEST_HOST as string);
+        await client1.login(email, password);
+        await client2.login(email, password);
+        expect(await client1.me).toEqual(await client2.me);
+        await client1.logout();
+        expect(await client1.me).toEqual(await client2.me);
+
+    });
+    test("Logout single session", async() => {
 
         const client = new TestClient(process.env.TEST_HOST as string);
         await client.login(email, password);

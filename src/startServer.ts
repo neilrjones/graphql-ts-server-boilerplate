@@ -12,7 +12,7 @@ import {confirmEmail} from "./routes/confirmEmail";
 import {genSchema} from "./utils/genSchema";
 import enVars from "./config/vars";
 
-const {secret, devport, frontEndHost} = enVars;
+const {secret, devport, frontEndHost, redisSessionPrefix} = enVars;
 const RedisStore = connectRedis(session);
 
 // startServer is used for starting the Graphql & database servers in
@@ -28,14 +28,14 @@ export const startServer = async() => {
       redis,
       url: request.protocol + "://" + request.get("host"),
       session: request.session,
-      header: request.header
+      req: request
     })
   });
 
   server
     .express
     .use(session({
-      store: new RedisStore({client: redis as any}),
+      store: new RedisStore({client: redis as any, prefix: redisSessionPrefix}),
       name: "nrjid",
       secret,
       resave: false,
