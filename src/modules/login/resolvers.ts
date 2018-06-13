@@ -1,7 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import {ResolverMap} from "../../types/graphql-utils";
 import {User} from "../../entity/User";
-import {invalidLogin, confirmEmailError} from "./errorMessages";
+import {invalidLogin, confirmEmailError, forgotPasswordLockedError} from "./errorMessages";
 import {createMiddleware} from "../../utils/createMiddleware";
 import middleware from "../../utils/middleware";
 import enVars from '../../config/vars';
@@ -33,6 +33,14 @@ export const resolvers : ResolverMap = {
           {
             path: "email",
             message: confirmEmailError
+          }
+        ];
+      }
+      if (user.forgotPasswordLocked) {
+        return [
+          {
+            path: "email",
+            message: forgotPasswordLockedError
           }
         ];
       }

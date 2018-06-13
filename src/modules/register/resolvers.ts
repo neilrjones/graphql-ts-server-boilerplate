@@ -1,24 +1,14 @@
-// import * as bcrypt from "bcryptjs";
 import * as yup from "yup";
 import {ResolverMap} from "../../types/graphql-utils";
 import {User} from "../../entity/User";
 import {formatYupError} from "../../utils/formatYupError";
-import {
-  duplicateEmail,
-  emailNotLongEnough,
-  invalidEmail,
-  passwordNotLongEnough,
-  passwordWrongFormat,
-  isRequired
-} from "./errorMessages";
+import {duplicateEmail, emailNotLongEnough, invalidEmail, isRequired} from "./errorMessages";
 import {createConfirmEmailLink} from "../../utils/createConfirmEmailLink";
 import {sendmail} from "../../utils/APIFcns";
 import {createMiddleware} from "../../utils/createMiddleware";
 import middleware from "../../utils/middleware";
+import {registerPasswordValidation} from "../../utils/yupSchemas";
 
-const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-
-// const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/;
 const schema = yup
   .object()
   .shape({
@@ -28,12 +18,7 @@ const schema = yup
       .min(3, emailNotLongEnough)
       .max(255)
       .email(invalidEmail),
-    password: yup
-      .string()
-      .required(isRequired)
-      .min(8, passwordNotLongEnough)
-      .max(255)
-      .matches(passwordReg, passwordWrongFormat)
+    password: registerPasswordValidation
   });
 
 export const resolvers : ResolverMap = {
@@ -42,6 +27,7 @@ export const resolvers : ResolverMap = {
   },
   Mutation: {
     register: createMiddleware(middleware, async(_, args : GQL.IRegisterOnMutationArguments, {redis, url}) => {
+      // First validate that the args are ok using yup
       try {
         await schema.validate(args, {abortEarly: false});
       } catch (err) {
@@ -49,7 +35,7 @@ export const resolvers : ResolverMap = {
       }
 
       const {email, password} = args;
-
+      // next check for duplicate user
       const userAlreadyExists = await User.findOne({where: {
           email
         }, select: ["id"]});
@@ -63,9 +49,7 @@ export const resolvers : ResolverMap = {
         ];
       }
 
-      // const hashedPassword = await bcrypt.hash(password, 10); Now being done by
-      // TypeOrm @BeforeInsert const user = User.create({email, password:
-      // hashedPassword});
+      // Now create user
       const user = User.create({email, password});
 
       await user.save();

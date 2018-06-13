@@ -48,6 +48,24 @@ export class TestClient {
         });
     }
 
+    // async sendForgotPasswordEmail() {     return rp.post(this.url, {
+    // ...this.options,         body: {             query: `       {         me {
+    //        id           email         }       }     `         }     }); }
+    async forgotPasswordChange(newPassword : string, key : string) {
+        return rp.post(this.url, {
+            ...this.options,
+            body: {
+                query: `
+          mutation {
+            forgotPasswordChange(newPassword: "${newPassword}", key: "${key}") {
+              path
+              message
+            }
+          }
+        `
+            }
+        });
+    }
     async me() {
         return rp.post(this.url, {
             ...this.options,
