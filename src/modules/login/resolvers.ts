@@ -23,7 +23,9 @@ export const resolvers : ResolverMap = {
       const user = await User.findOne({where: {
           email
         }});
-
+      // @TODO - Count the number of login attempts by user and lock account if too
+      // many.  Implement in redis and lock for x minutes or implement in database
+      // column.  Send email if too many attempts.
       if (!user) {
         return errorResponse;
       }

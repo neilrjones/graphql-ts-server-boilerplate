@@ -41,7 +41,6 @@ describe("Forgot password test", () => {
     const url = await createForgetPasswordLink("", userId, redis);
     const parts = url.split("/");
     const key = parts[parts.length - 1];
-    console.log("Key", key);
     // Make sure you can't log in to account
     expect(await client.login(email, password)).toEqual({
       data: {

@@ -2,6 +2,8 @@ import {GraphQLServer} from "graphql-yoga";
 import * as session from "express-session";
 import * as connectRedis from "connect-redis";
 import "reflect-metadata";
+import * as RateLimit from 'express-rate-limit';
+import * as RateLimitRedisStore from 'rate-limit-redis';
 
 import "dotenv/config";
 
@@ -31,6 +33,17 @@ export const startServer = async() => {
       req: request
     })
   });
+
+  // RateLimit is a security middleware that limits the number of requests by IP
+  // address.
+  server
+    .express
+    .use(new RateLimit({
+      store: new RateLimitRedisStore({client: redis as any}),
+      windowMs: 15 *1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+      delayMs: 0 // disable delaying - full speed until the max limit is reached
+    }));
 
   server
     .express
