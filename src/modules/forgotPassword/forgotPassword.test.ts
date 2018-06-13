@@ -5,7 +5,7 @@ import {TestClient} from "../../utils/testClient";
 import {createForgetPasswordLink} from "../../utils/createForgetPasswordLink";
 import {redis} from "../../redis";
 import {forgotPasswordLockAccount} from "../../utils/forgotPasswordLockAccount";
-import {passwordWrongFormat} from "../register/errorMessages";
+import {passwordWrongFormat, passwordNotLongEnough} from "../register/errorMessages";
 import {expiredKeyError} from "./errorMessages";
 import {forgotPasswordLockedError} from "../login/errorMessages";
 
@@ -41,24 +41,32 @@ describe("Forgot password test", () => {
     const url = await createForgetPasswordLink("", userId, redis);
     const parts = url.split("/");
     const key = parts[parts.length - 1];
+    console.log("Key", key);
     // Make sure you can't log in to account
     expect(await client.login(email, password)).toEqual({
       data: {
-        login: {
-          path: "email",
-          message: forgotPasswordLockedError
-        }
+        login: [
+          {
+            path: "email",
+            message: forgotPasswordLockedError
+          }
+        ]
       }
     });
     // Next change password with invalid password - doesn't meet pw validation rules
 
     const response = await client.forgotPasswordChange("abxdlfg", key);
-    expect(response.data).toEqual({
+    expect(response).toEqual({
       data: {
-        forgotPasswordChange: {
-          path: "newPassword",
-          message: passwordWrongFormat
-        }
+        forgotPasswordChange: [
+          {
+            path: "newPassword",
+            message: passwordNotLongEnough
+          }, {
+            path: "newPassword",
+            message: passwordWrongFormat
+          }
+        ]
       }
     });
 
@@ -70,12 +78,14 @@ describe("Forgot password test", () => {
     // expired after the first successful password change above
 
     const response3 = await client.forgotPasswordChange("423abxdlfg!", key);
-    expect(response3.data).toEqual({
+    expect(response3).toEqual({
       data: {
-        forgotPasswordChange: {
-          path: "key",
-          message: expiredKeyError
-        }
+        forgotPasswordChange: [
+          {
+            path: "key",
+            message: expiredKeyError
+          }
+        ]
       }
     });
     // Login with the new password should now succeed

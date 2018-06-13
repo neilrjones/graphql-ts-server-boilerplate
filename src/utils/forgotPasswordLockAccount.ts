@@ -9,6 +9,5 @@ export const forgotPasswordLockAccount = async(userId : string, redis : Redis) =
         id: userId
     }, {forgotPasswordLocked: true});
     // Lock account as soon as the forgotpasswordLink email is sent
-
     await removeUserSessions(userId, redis);
 };
