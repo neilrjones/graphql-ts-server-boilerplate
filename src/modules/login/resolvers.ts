@@ -46,11 +46,13 @@ export const resolvers : ResolverMap = {
           }
         ];
       }
+      if (user.password) {
 
-      const valid = await bcrypt.compare(password, user.password);
+        const valid = await bcrypt.compare(password, user.password);
 
-      if (!valid) {
-        return errorResponse;
+        if (!valid) {
+          return errorResponse;
+        }
       }
       // Login successful. Store the user.id in the redis based session store
       // express-session will not create a cookie for the person that made the request

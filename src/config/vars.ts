@@ -24,7 +24,7 @@ const enVars = {
   fbookSecret: process.env.FACEBOOK_CLIENT_SECRET,
   callbackUrl: process.env.FACEBOOK_CALLBACK,
   asyncUrl: process.env.ASYNC_URL,
-  secret: process.env.SECRET || 'bA2xcjpf8y5aSUFsNB2qN5yymUBSs6es3qHoFpGkec75RCeBb8cpKauGefw5qy4',
+  secret: process.env.SECRET,
   secret2: process.env.SECRET2,
   awsId: process.env.AWS_ACCESS_KEY_ID,
   awsKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -52,7 +52,9 @@ const enVars = {
   redisSessionPrefix: process.env.REDIS_PREFIX,
   userSessionPrefix: process.env.USER_SESSION_ID_PREFIX,
   forgotPasswordPrefix: process.env.FORGOT_PASSWORD_PREFIX,
-
+  twitter_consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  twitter_consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  twitter_callback: process.env.TWITTER_CALLBACK,
   logs: process.env.NODE_ENV === 'production'
     ? 'combined'
     : 'dev'
