@@ -1,10 +1,10 @@
-import {createTypeormConn} from "../../utils/createTypeormConn";
-import {User} from "../../entity/User";
+import {createTypeormConn} from "../../../utils/createTypeormConn";
+import {User} from "../../../entity/User";
 import {Connection} from "typeorm";
-import {TestClient} from "../../utils/testClient";
-import {createForgetPasswordLink} from "../../utils/createForgetPasswordLink";
-import {redis} from "../../redis";
-import {forgotPasswordLockAccount} from "../../utils/forgotPasswordLockAccount";
+import {TestClient} from "../../../utils/testClient";
+import {createForgetPasswordLink} from "../../../utils/createForgetPasswordLink";
+import {redis} from "../../../redis";
+import {forgotPasswordLockAccount} from "../../../utils/forgotPasswordLockAccount";
 import {passwordWrongFormat, passwordNotLongEnough} from "../register/errorMessages";
 import {expiredKeyError} from "./errorMessages";
 import {forgotPasswordLockedError} from "../login/errorMessages";

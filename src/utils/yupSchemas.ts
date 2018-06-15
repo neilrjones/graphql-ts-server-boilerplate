@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import {passwordNotLongEnough, passwordWrongFormat, isRequired} from "../modules/register/errorMessages";
+import {passwordNotLongEnough, passwordWrongFormat, isRequired} from "../modules/user/register/errorMessages";
 
 const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 

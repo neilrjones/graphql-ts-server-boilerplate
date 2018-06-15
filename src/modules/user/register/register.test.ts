@@ -1,9 +1,9 @@
-import {User} from "../../entity/User";
+import {User} from "../../../entity/User";
 import {duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough, passwordWrongFormat} from "./errorMessages";
-import {createTypeormConn} from "../../utils/createTypeormConn";
+import {createTypeormConn} from "../../../utils/createTypeormConn";
 // import { Connection } from "nodemailer/lib/mailer";
 import {Connection} from "typeorm";
-import {TestClient} from "../../utils/testClient";
+import {TestClient} from "../../../utils/testClient";
 
 let conn : Connection;
 beforeAll(async() => {

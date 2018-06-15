@@ -1,16 +1,16 @@
 import * as bcrypt from "bcryptjs"
 import * as yup from 'yup';
-import {ResolverMap} from "../../types/graphql-utils";
-import {createMiddleware} from "../../utils/createMiddleware";
-import middleware from "../../utils/middleware";
-import enVars from '../../config/vars';
-import {forgotPasswordLockAccount} from "../../utils/forgotPasswordLockAccount";
-import {createForgetPasswordLink} from "../../utils/createForgetPasswordLink";
-import {User} from "../../entity/User";
+import {ResolverMap} from "../../../types/graphql-utils";
+import {createMiddleware} from "../../../utils/createMiddleware";
+import middleware from "../../../utils/middleware";
+import enVars from '../../../config/vars';
+import {forgotPasswordLockAccount} from "../../../utils/forgotPasswordLockAccount";
+import {createForgetPasswordLink} from "../../../utils/createForgetPasswordLink";
+import {User} from "../../../entity/User";
 import {userNotFoundError, expiredKeyError} from "./errorMessages";
 
-import {registerPasswordValidation} from '../../utils/yupSchemas';
-import {formatYupError} from '../../utils/formatYupError';
+import {registerPasswordValidation} from '../../../utils/yupSchemas';
+import {formatYupError} from '../../../utils/formatYupError';
 const {forgotPasswordPrefix} = enVars;
 
 const schema = yup
@@ -21,9 +21,6 @@ const schema = yup
 // as the forgotpasswordLink email is sent Lock account - Don't let them login
 // and Need to add front-end url in createForgetPasswordLink below
 export const resolvers : ResolverMap = {
-  Query: {
-    byelogout: () => "bye"
-  },
   Mutation: {
     sendForgotPasswordEmail: createMiddleware(middleware, async(_, {email} : GQL.ISendForgotPasswordEmailOnMutationArguments, {redis}) => {
       // @todo - revisit logic since anyone might be able to lockout another

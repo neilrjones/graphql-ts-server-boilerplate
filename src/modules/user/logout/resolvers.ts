@@ -1,14 +1,11 @@
-import {ResolverMap} from "../../types/graphql-utils";
+import {ResolverMap} from "../../../types/graphql-utils";
 // import {createMiddleware} from "../../utils/createMiddleware"; import
 // middleware from "../../utils/middleware";
-import {removeUserSessions} from "../../utils/removeUserSessions";
+import {removeUserSessions} from "../../../utils/removeUserSessions";
 // import {PromiseUtils} from "typeorm"; createMiddleware takes two parameters,
-// middlewareFcn, ResolverFcn Current logout only destroys one session.  We need
-// to update to destroy all sessions related to this user.
+// middlewareFcn, ResolverFcn Current logout only destroys one session.  We
+// need to update to destroy all sessions related to this user.
 export const resolvers : ResolverMap = {
-  Query: {
-    dummy: () => "dummy"
-  },
   Mutation: {
     logout: async(_, __, {session, redis}) => {
       const {userId} = session;

@@ -1,10 +1,10 @@
 import * as bcrypt from "bcryptjs";
-import {ResolverMap} from "../../types/graphql-utils";
-import {User} from "../../entity/User";
+import {ResolverMap} from "../../../types/graphql-utils";
+import {User} from "../../../entity/User";
 import {invalidLogin, confirmEmailError, forgotPasswordLockedError} from "./errorMessages";
-import {createMiddleware} from "../../utils/createMiddleware";
-import middleware from "../../utils/middleware";
-import enVars from '../../config/vars';
+import {createMiddleware} from "../../../utils/createMiddleware";
+import middleware from "../../../utils/middleware";
+import enVars from '../../../config/vars';
 
 const {userSessionPrefix} = enVars;
 const errorResponse = [
@@ -15,9 +15,6 @@ const errorResponse = [
 ];
 
 export const resolvers : ResolverMap = {
-  Query: {
-    bye2: () => "bye"
-  },
   Mutation: {
     login: createMiddleware(middleware, async(_, {email, password} : GQL.ILoginOnMutationArguments, {session, redis, req}) => {
       const user = await User.findOne({where: {

@@ -1,13 +1,13 @@
 import * as yup from "yup";
-import {ResolverMap} from "../../types/graphql-utils";
-import {User} from "../../entity/User";
-import {formatYupError} from "../../utils/formatYupError";
+import {ResolverMap} from "../../../types/graphql-utils";
+import {User} from "../../../entity/User";
+import {formatYupError} from "../../../utils/formatYupError";
 import {duplicateEmail, emailNotLongEnough, invalidEmail, isRequired} from "./errorMessages";
-import {createConfirmEmailLink} from "../../utils/createConfirmEmailLink";
-import {sendmail} from "../../utils/APIFcns";
-import {createMiddleware} from "../../utils/createMiddleware";
-import middleware from "../../utils/middleware";
-import {registerPasswordValidation} from "../../utils/yupSchemas";
+import {createConfirmEmailLink} from "../../../utils/createConfirmEmailLink";
+import {sendmail} from "../../../utils/APIFcns";
+import {createMiddleware} from "../../../utils/createMiddleware";
+import middleware from "../../../utils/middleware";
+import {registerPasswordValidation} from "../../../utils/yupSchemas";
 
 const schema = yup
   .object()
@@ -22,9 +22,6 @@ const schema = yup
   });
 
 export const resolvers : ResolverMap = {
-  Query: {
-    bye: () => "bye"
-  },
   Mutation: {
     register: createMiddleware(middleware, async(_, args : GQL.IRegisterOnMutationArguments, {redis, url}) => {
       // First validate that the args are ok using yup

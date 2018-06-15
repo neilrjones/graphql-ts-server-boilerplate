@@ -1,8 +1,8 @@
 import {request} from "graphql-request";
 import {Connection} from "typeorm";
 
-import {User} from "../../entity/User";
-import {createTypeormConn} from "../../utils/createTypeormConn";
+import {User} from "../../../entity/User";
+import {createTypeormConn} from "../../../utils/createTypeormConn";
 
 // Tried build the test suite without a Request library like Axios Did not work.
 //  Doesn't preserve the session/cookie state
