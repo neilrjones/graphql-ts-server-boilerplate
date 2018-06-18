@@ -9,10 +9,11 @@ import * as passport from 'passport';
 
 import {redis} from "./redis";
 import twitter from './config/passport';
-import {createTypeormConn} from "./utils/createTypeormConn";
+import {createTypeormConn} from "./testUtils/createTypeormConn";
 import {confirmEmail} from "./routes/confirmEmail";
 import {genSchema} from "./utils/genSchema";
 import enVars from "./config/vars";
+import {Connection} from "typeorm";
 
 const {secret, devport, frontEndHost, redisSessionPrefix} = enVars;
 const RedisStore = connectRedis(session);
@@ -24,6 +25,10 @@ const RedisStore = connectRedis(session);
 // includes the redis object and the requesting url which will be used to
 // generate a confirm email link by the resolver
 export const startServer = async() => {
+  // Purge the Redis cache before each test
+  if (process.env.NODE_ENV === "test") {
+    await redis.flushall();
+  }
   const server = new GraphQLServer({
     schema: genSchema(),
     context: ({request}) => ({
@@ -69,9 +74,15 @@ export const startServer = async() => {
   server
     .express
     .get("/confirm/:id.:ext?", confirmEmail);
+  let connection : Connection;
+  // Purge the database before each test eslint-disable-next-line
+  // prefer-conditional-expression
+  if (process.env.NODE_ENV === "test") { // tslint:disable-line
+    connection = await createTypeormConn(true);
+  } else {
+    connection = await createTypeormConn();
 
-  const connection = await createTypeormConn();
-
+  }
   // Twitter auth middleware
   await twitter(connection);
 

@@ -1,20 +1,29 @@
+import * as faker from "faker";
+
 import {User} from "../../../entity/User";
 import {duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough, passwordWrongFormat} from "./errorMessages";
-import {createTypeormConn} from "../../../utils/createTypeormConn";
+import {createTypeormConn} from "../../../testUtils/createTypeormConn";
 // import { Connection } from "nodemailer/lib/mailer";
 import {Connection} from "typeorm";
 import {TestClient} from "../../../utils/testClient";
 
 let conn : Connection;
 beforeAll(async() => {
+
   conn = await createTypeormConn();
 });
 afterAll(async() => {
-  conn.close();
+  await conn.close();
 });
 
-const email = "register@bob.com";
-const password = "123EastSussex!";
+// const email = "register@bob.com"; const password = "123EastSussex!";
+const email = faker
+  .internet
+  .email();
+const password = `${faker
+  .internet
+  .password()}!@369`;
+// const newPassword = `${faker   .internet   .password()}!@482`;
 
 describe("Register user", async() => {
   it("test for duplicate emails", async() => {

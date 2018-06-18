@@ -1,4 +1,6 @@
-import {createTypeormConn} from "../../../utils/createTypeormConn";
+import * as faker from "faker";
+
+import {createTypeormConn} from "../../../testUtils/createTypeormConn";
 import {User} from "../../../entity/User";
 import {Connection} from "typeorm";
 import {TestClient} from "../../../utils/testClient";
@@ -11,11 +13,21 @@ import {forgotPasswordLockedError} from "../login/errorMessages";
 
 let userId : string;
 let conn : Connection;
-const email = "logout@bob.com";
-const password = "427Jjlkajoioiqwe!";
-const newPassword = "427Jjlkajoioiqwe!@";
+// const email = "logout@bob.com"; const password = "427Jjlkajoioiqwe!"; const
+// newPassword = "427Jjlkajoioiqwe!@";
+
+const email = faker
+  .internet
+  .email();
+const password = `${faker
+  .internet
+  .password()}!@369`;
+const newPassword = `${faker
+  .internet
+  .password()}!@482`;
 
 beforeAll(async() => {
+
   conn = await createTypeormConn();
   const user = await User
     .create({email, password, confirmed: true})
@@ -24,7 +36,7 @@ beforeAll(async() => {
 });
 
 afterAll(async() => {
-  conn.close();
+  await conn.close();
 });
 
 //
@@ -76,7 +88,7 @@ describe("Forgot password test", () => {
     // Next try to change password with valid password but now the key Should have
     // expired after the first successful password change above
 
-    const response3 = await client.forgotPasswordChange("423abxdlfg!", key);
+    const response3 = await client.forgotPasswordChange(`${faker.internet.password()}!@423`, key);
     expect(response3).toEqual({
       data: {
         forgotPasswordChange: [

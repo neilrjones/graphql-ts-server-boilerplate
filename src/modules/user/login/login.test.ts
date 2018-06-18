@@ -1,23 +1,31 @@
+import * as faker from "faker";
+
 import {Connection} from "typeorm";
 
 import {invalidLogin, confirmEmailError} from "./errorMessages";
 import {User} from "../../../entity/User";
-import {createTypeormConn} from "../../../utils/createTypeormConn";
+import {createTypeormConn} from "../../../testUtils/createTypeormConn";
 import {TestClient} from "../../../utils/testClient";
 
-const email = "logintom@bob.com";
-const password = "427Jjalksdf!";
-
+// const email = "logintom@bob.com"; const password = "427Jjalksdf!";
+const email = faker
+  .internet
+  .email();
+const password = `${faker
+  .internet
+  .password()}!@369`;
+// const newPassword = `${faker   .internet   .password()}!@482`;
 //
 // Test refactored to use the new testClient class
 //
 let conn : Connection;
 beforeAll(async() => {
+
   conn = await createTypeormConn();
 });
 
 afterAll(async() => {
-  conn.close();
+  await conn.close();
 });
 
 const loginExpectError = async(client : any, e : string, p : string, errMsg : string) => {

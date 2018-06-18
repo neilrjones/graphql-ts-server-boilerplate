@@ -3,7 +3,7 @@ import {ResolverMap} from "../../../types/graphql-utils";
 import {User} from "../../../entity/User";
 import {formatYupError} from "../../../utils/formatYupError";
 import {duplicateEmail, emailNotLongEnough, invalidEmail, isRequired} from "./errorMessages";
-import {createConfirmEmailLink} from "../../../utils/createConfirmEmailLink";
+import {createConfirmEmailLink} from "../../register/createConfirmEmailLink";
 import {sendmail} from "../../../utils/APIFcns";
 import {createMiddleware} from "../../../utils/createMiddleware";
 import middleware from "../../../utils/middleware";

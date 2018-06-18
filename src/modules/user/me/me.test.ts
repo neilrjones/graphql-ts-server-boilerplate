@@ -1,14 +1,23 @@
-import {createTypeormConn} from "../../../utils/createTypeormConn";
+import * as faker from "faker";
+
+import {createTypeormConn} from "../../../testUtils/createTypeormConn";
 import {User} from "../../../entity/User";
 import {Connection} from "typeorm";
 import {TestClient} from "../../../utils/testClient";
 
 let userId : string;
 let conn : Connection;
-const email = "me@bob.com";
-const password = "427Jjlkajoioiqwe!";
+// const email = "me@bob.com"; const password = "427Jjlkajoioiqwe!";
+const email = faker
+    .internet
+    .email();
+const password = `${faker
+    .internet
+    .password()}!@369`;
+// const newPassword = `${faker   .internet   .password()}!@482`;
 
 beforeAll(async() => {
+
     conn = await createTypeormConn();
     const user = await User
         .create({email, password, confirmed: true})
@@ -17,7 +26,7 @@ beforeAll(async() => {
 });
 
 afterAll(async() => {
-    conn.close();
+    await conn.close();
 });
 
 describe("me", () => {
