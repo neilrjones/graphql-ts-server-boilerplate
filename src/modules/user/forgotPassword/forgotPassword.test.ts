@@ -14,8 +14,9 @@ import {forgotPasswordLockedError} from "../login/errorMessages";
 let userId : string;
 let conn : Connection;
 // const email = "logout@bob.com"; const password = "427Jjlkajoioiqwe!"; const
-// newPassword = "427Jjlkajoioiqwe!@";
-
+// newPassword = "427Jjlkajoioiqwe!@"; This piece of code handles possible race
+// conditions during testing
+faker.seed(Date.now() + 0); // Change the faker seed for each test
 const email = faker
   .internet
   .email();

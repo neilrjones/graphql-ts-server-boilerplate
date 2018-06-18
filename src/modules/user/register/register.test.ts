@@ -16,7 +16,8 @@ afterAll(async() => {
   await conn.close();
 });
 
-// const email = "register@bob.com"; const password = "123EastSussex!";
+// This piece of code handles possible race conditions during testing
+faker.seed(Date.now() + 254); // Change the faker seed for each test
 const email = faker
   .internet
   .email();

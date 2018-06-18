@@ -7,7 +7,8 @@ import {User} from "../../../entity/User";
 import {createTypeormConn} from "../../../testUtils/createTypeormConn";
 import {TestClient} from "../../../utils/testClient";
 
-// const email = "logintom@bob.com"; const password = "427Jjalksdf!";
+// This piece of code handles possible race conditions during testing
+faker.seed(Date.now() + 23); // Change the faker seed for each test
 const email = faker
   .internet
   .email();

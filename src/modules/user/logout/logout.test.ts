@@ -7,7 +7,9 @@ import {TestClient} from "../../../utils/testClient";
 
 let userId : string;
 let conn : Connection;
-// const email = "logout@bob.com"; const password = "427Jjlkajoioiqwe!";
+
+// This piece of code handles possible race conditions during testing
+faker.seed(Date.now() + 278); // Change the faker seed for each test
 const email = faker
     .internet
     .email();

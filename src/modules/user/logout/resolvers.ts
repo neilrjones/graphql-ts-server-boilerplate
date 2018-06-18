@@ -3,8 +3,8 @@ import {ResolverMap} from "../../../types/graphql-utils";
 // middleware from "../../utils/middleware";
 import {removeUserSessions} from "../../../utils/removeUserSessions";
 // import {PromiseUtils} from "typeorm"; createMiddleware takes two parameters,
-// middlewareFcn, ResolverFcn Current logout only destroys one session.  We
-// need to update to destroy all sessions related to this user.
+// middlewareFcn, ResolverFcn Current logout only destroys one session.  We need
+// to update to destroy all sessions related to this user.
 export const resolvers : ResolverMap = {
   Mutation: {
     logout: async(_, __, {session, redis}) => {
@@ -12,6 +12,14 @@ export const resolvers : ResolverMap = {
       if (userId) {
         // Purge all user sessions from all devices previously used
         removeUserSessions(userId, redis);
+        // This piece of code handles possible race conditions during testing
+        //
+        session.destroy(err => {
+          if (err) {
+            console.log(err);
+          }
+        });
+        return true;
       }
       return false;
     }
